@@ -1,5 +1,6 @@
 package sample;
 
+import com.sun.source.tree.Tree;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -16,14 +17,12 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.*;
 import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+
     private TreeItem<String> currentTreeItem;
-    private List<String> users;
-    private List<String> groups;
 
     private Visitor checkMessage = new MessageTotalVisitor();
     private Visitor checkUserTotal = new UserTotalVisitor();
@@ -31,7 +30,7 @@ public class Controller implements Initializable {
     private Visitor checkPositive = new PositiveMessageVisitor();
 
     @FXML
-    private TreeView<String> tree;
+    private TreeView treeView;
 
     @FXML
     private TextArea userID;
@@ -61,9 +60,6 @@ public class Controller implements Initializable {
     private Button showPositiveWordPercentage;
 
     public Controller(){
-        users = new LinkedList<>();
-        groups = new LinkedList<>();
-        tree = new TreeView();
         groupID = new TextArea();
         UserView = new Button();
         showUserTotal = new Button();
@@ -74,18 +70,18 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Main.putUsersIn();
+        TreeItem<String> root = new TreeItem<>("Root");
+        treeView.setRoot(root);
+        root.setExpanded(true);
+
+        for(User user : Main.getTwitterUsers()){
+            String id = user.getID();
+            TreeItem<String> newTreeItem = new TreeItem<>(id);
+            root.getChildren().add(newTreeItem);
+        }
 
     }
-
-    public TreeView<String> getTree(){
-        return tree;
-    }
-
-    public void setTreeRoot(TreeItem<String> root){
-        tree.setRoot(root);
-    }
-
-
 
     public void openUserView(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
 
@@ -104,7 +100,7 @@ public class Controller implements Initializable {
         TreeItem<String> item = new TreeItem<>();
 
         Main.getTwitterUsers().add(newUser);
-        tree.getRoot().getChildren().add(item);
+        treeView.getRoot().getChildren().add(item);
 
     }
 
@@ -165,7 +161,7 @@ public class Controller implements Initializable {
 
     public void returnTreeItem(MouseEvent mouseEvent) {
 
-        tree.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
+        treeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
             @Override
             public void changed(ObservableValue<? extends TreeItem<String>> observableValue, TreeItem<String> stringTreeItem, TreeItem<String> t1) {
                 currentTreeItem = (TreeItem<String>) t1;
