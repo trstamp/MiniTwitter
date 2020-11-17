@@ -12,17 +12,19 @@ import javafx.stage.Stage;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Main extends Application {
+public class Main extends Application{
 
     private static List<User> twitterUsers = new LinkedList<>();
     private static List<UserGroup> twitterGroups = new LinkedList<>();
+    private static Parent root;
 
     @Override
     public void start(Stage mainFrame) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("adminpanel.fxml"));
+        root = FXMLLoader.load(getClass().getResource("adminpanel.fxml"));
 
         mainFrame.setTitle("Mini Twitter");
         mainFrame.setScene(new Scene(root, 600, 340));
+        mainFrame.getScene().getStylesheets().add("MiniTwitterFX.css");
         mainFrame.show();
     }
 
@@ -38,4 +40,5 @@ public class Main extends Application {
     public static List<UserGroup> getTwitterGroups(){
         return  twitterGroups;
     }
+
 }

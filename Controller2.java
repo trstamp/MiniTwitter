@@ -12,9 +12,9 @@ import javafx.scene.input.MouseEvent;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class Controller2 implements Initializable {
+public class Controller2 implements Initializable, Observer{
 
-    private String username = "";
+    private String username;
 
     @FXML
     private TextArea enterUserID;
@@ -54,14 +54,17 @@ public class Controller2 implements Initializable {
 
     public void followUser(MouseEvent mouseEvent) {
         String user = enterUserID.getText();
-
+        TreeItem<String> item = new TreeItem<>(user);
         for(User u : Main.getTwitterUsers()){
             if(u.getID() == user){
-                TreeItem<String> item = new TreeItem<>(user);
                 followingList.getRoot().getChildren().add(item);
             }
+            if(u.getID() == username){
+                u.follow(user);
+            }
         }
-        followingList.refresh();
+        followingList.getRoot().getChildren().add(item);
+
     }
 
     public void refresh(MouseEvent mouseEvent) {
@@ -71,12 +74,26 @@ public class Controller2 implements Initializable {
 
     public void postTweet(MouseEvent mouseEvent) {
         String tweet = enterTweet.getText();
+        for(User u : Main.getTwitterUsers()){
+            if(u.getID() == username){
+                u.getMessages().add(tweet);
+            }
+        }
         TreeItem<String> item = new TreeItem<>(tweet);
         tweetList.getRoot().getChildren().add(item);
-        tweetList.refresh();
+
     }
 
     public void setUsername(String s){
         username = s;
+    }
+
+    @Override
+    public void update(Subject subject) {
+        if(subject instanceof User){
+            for(String news : ((User) subject).getNewsFeed()){
+                tweetList.getRoot().getChildren().add(news);
+            }
+        }
     }
 }

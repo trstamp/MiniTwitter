@@ -3,7 +3,7 @@ package sample;
 import java.util.LinkedList;
 import java.util.List;
 
-public class User implements Visitable{
+public class User extends Subject implements Visitable {
 
     private String ID;
     private List<String> followers;
@@ -11,8 +11,8 @@ public class User implements Visitable{
     private List<String> messages;
     private List<String> newsFeed;
 
-    public User(String ID){
-        ID = this.ID;
+    public User(String i_d){
+        ID = i_d;
         followers = new LinkedList<>();
         followings = new LinkedList<>();
         newsFeed = new LinkedList<>();
@@ -41,5 +41,9 @@ public class User implements Visitable{
 
     public List<String> getFollowings(){
         return followings;
+    }
+
+    public List<String> getNewsFeed() {
+        return newsFeed;
     }
 }
