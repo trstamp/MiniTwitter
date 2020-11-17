@@ -5,14 +5,14 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<AnchorPane prefHeight="430.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller2">
    <children>
-      <TextArea layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="290.0" promptText="Enter User ID" />
-      <Button layoutX="324.0" layoutY="14.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="260.0" text="Follow User" />
-      <TreeView layoutX="14.0" layoutY="63.0" prefHeight="118.0" prefWidth="570.0" />
-      <TextArea layoutX="14.0" layoutY="200.0" prefHeight="38.0" prefWidth="290.0" promptText="Enter Tweet" />
-      <Button layoutX="324.0" layoutY="200.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="260.0" text="Post Tweet" />
-      <TreeView layoutX="14.0" layoutY="252.0" prefHeight="118.0" prefWidth="570.0" />
-      <Button layoutX="492.0" layoutY="373.0" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="26.0" prefWidth="94.0" text="Refresh" />
+      <TextArea fx:id="enterUserID" layoutX="14.0" layoutY="14.0" prefHeight="38.0" prefWidth="290.0" promptText="Enter User ID" />
+      <Button fx:id="followUser" layoutX="324.0" layoutY="14.0" mnemonicParsing="false" onMouseClicked="#followUser" prefHeight="38.0" prefWidth="260.0" text="Follow User" />
+      <TreeView fx:id="followingList" layoutX="14.0" layoutY="63.0" prefHeight="118.0" prefWidth="570.0" />
+      <TextArea fx:id="enterTweet" layoutX="14.0" layoutY="200.0" prefHeight="38.0" prefWidth="290.0" promptText="Enter Tweet" />
+      <Button fx:id="postTweet" layoutX="324.0" layoutY="200.0" mnemonicParsing="false" onMouseClicked="#postTweet" prefHeight="38.0" prefWidth="260.0" text="Post Tweet" />
+      <TreeView fx:id="tweetList" layoutX="14.0" layoutY="252.0" prefHeight="118.0" prefWidth="570.0" />
+      <Button layoutX="491.0" layoutY="389.0" mnemonicParsing="false" onMouseClicked="#refresh" prefHeight="26.0" prefWidth="94.0" text="Refresh" />
    </children>
 </AnchorPane>

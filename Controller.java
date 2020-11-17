@@ -3,6 +3,7 @@ package sample;
 import com.sun.source.tree.Tree;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -13,8 +14,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.input.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -70,41 +74,56 @@ public class Controller implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Main.putUsersIn();
+
         TreeItem<String> root = new TreeItem<>("Root");
         treeView.setRoot(root);
         root.setExpanded(true);
 
-        for(User user : Main.getTwitterUsers()){
-            String id = user.getID();
-            TreeItem<String> newTreeItem = new TreeItem<>(id);
-            root.getChildren().add(newTreeItem);
-        }
+        treeView.refresh();
 
     }
 
-    public void openUserView(javafx.scene.input.MouseEvent mouseEvent) throws IOException {
+    @FXML
+    void openUserView(ActionEvent event) {
+        try {
 
-        Stage userView = new Stage();
-        Parent userPanel = FXMLLoader.load(getClass().getResource("userview.fxml"));
-        userView.setTitle("Placeholder");
-        userView.setScene(new Scene(userPanel, 600, 430));
-        userView.show();
+            FXMLLoader loader = new FXMLLoader((getClass().getResource("userview.fxml")));
+            AnchorPane userPanel = loader.load();
+            Stage userView = new Stage();
 
+            String title = String.valueOf(currentTreeItem.getValue());
+            Controller2 ct = new Controller2();
+            ct.setUsername(title);
+
+            userView.setScene(new Scene(userPanel, 600, 430));
+            userView.setTitle(title);
+            userView.show();
+        } catch (Exception e) {
+            System.out.println("Cannot open window.");
+        }
     }
 
     public void addUserClicked(MouseEvent mouseEvent) {
         String user = userID.getText();
 
         User newUser = new User(user);
-        TreeItem<String> item = new TreeItem<>();
+        TreeItem<String> item = new TreeItem<>(user);
 
         Main.getTwitterUsers().add(newUser);
         treeView.getRoot().getChildren().add(item);
+        treeView.refresh();
 
     }
 
     public void addGroupClicked(MouseEvent mouseEvent) {
+        String group = groupID.getText();
+
+        UserGroup newGroup = new UserGroup(group);
+        TreeItem<String> item = new TreeItem<>(group);
+
+        Main.getTwitterGroups().add(newGroup);
+        treeView.getRoot().getChildren().add(item);
+        treeView.refresh();
 
 
     }
@@ -160,17 +179,11 @@ public class Controller implements Initializable {
     }
 
     public void returnTreeItem(MouseEvent mouseEvent) {
-
-        treeView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<TreeItem<String>>() {
-            @Override
-            public void changed(ObservableValue<? extends TreeItem<String>> observableValue, TreeItem<String> stringTreeItem, TreeItem<String> t1) {
-                currentTreeItem = (TreeItem<String>) t1;
-            }
-        });
+        currentTreeItem = (TreeItem<String>) treeView.getSelectionModel().getSelectedItem();
     }
 
-    public void refresh(MouseEvent mouseEvent) {
-
+    public TreeView<String> getTree(){
+        return treeView;
     }
 
 }

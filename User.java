@@ -38,4 +38,8 @@ public class User implements Visitable{
     public void accept(Visitor visitor) {
         visitor.visitUser(this);
     }
+
+    public List<String> getFollowings(){
+        return followings;
+    }
 }
