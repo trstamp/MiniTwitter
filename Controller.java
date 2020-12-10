@@ -26,6 +26,8 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable, Observer {
 
+    private String lastUser;
+    private Controller2 ct;
 
     private TreeItem<String> currentTreeItem;
 
@@ -93,7 +95,7 @@ public class Controller implements Initializable, Observer {
             Stage userView = new Stage();
 
             String title = String.valueOf(currentTreeItem.getValue());
-            Controller2 ct = new Controller2();
+            ct = new Controller2();
             ct.setUsername(title);
 
             userView.setScene(new Scene(userPanel, 600, 430));
@@ -107,26 +109,55 @@ public class Controller implements Initializable, Observer {
 
     public void addUserClicked(MouseEvent mouseEvent) {
         String user = userID.getText();
+        boolean existingUser = false;
 
         User newUser = new User(user);
         TreeItem<String> item = new TreeItem<>(user);
 
-        Main.getTwitterUsers().add(newUser);
-        treeView.getRoot().getChildren().add(item);
+        // Verify Twitter Users
+        for(User u : Main.getTwitterUsers()) {
+            if(u.getID() == user){
+                existingUser = true;
+                System.out.println("User already created.");
+            }
+        }
+
+        if(existingUser = false){
+            Main.getTwitterUsers().add(newUser);
+            treeView.getRoot().getChildren().add(item);
+        }
+
+        System.out.println("Time of user creation: " + System.currentTimeMillis());
+
         treeView.refresh();
 
     }
 
     public void addGroupClicked(MouseEvent mouseEvent) {
         String group = groupID.getText();
+        boolean existingGroup = false;
+
         Text txt = new Text(group);
         txt.setStyle("-fx-font-weight: bold");
 
         UserGroup newGroup = new UserGroup(group);
         TreeItem<String> item = new TreeItem<>(group);
 
-        Main.getTwitterGroups().add(newGroup);
-        treeView.getRoot().getChildren().add(item);
+        // Verify Group
+        for(UserGroup ug : Main.getTwitterGroups()){
+            if(ug.getID() == group){
+                existingGroup = true;
+                System.out.println("Group already created.");
+            }
+        }
+
+        if(existingGroup = false) {
+            Main.getTwitterGroups().add(newGroup);
+            treeView.getRoot().getChildren().add(item);
+        }
+
+        System.out.println("Time of group creation: " + System.currentTimeMillis());
+
         treeView.refresh();
 
 
@@ -220,5 +251,9 @@ public class Controller implements Initializable, Observer {
         if(subject instanceof User){
 
         }
+    }
+
+    public void returnLastUpdatedUser(MouseEvent mouseEvent) {
+        ct.getLastUser();
     }
 }

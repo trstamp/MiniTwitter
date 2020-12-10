@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
 public class Controller2 implements Initializable, Observer{
 
     private String username;
+    private String lastUser;
 
     @FXML
     private TextArea enterUserID;
@@ -61,9 +62,13 @@ public class Controller2 implements Initializable, Observer{
             }
             if(u.getID() == username){
                 u.follow(user);
+                // update
+                lastUpdateTimeUpdate(u);
             }
         }
         followingList.getRoot().getChildren().add(item);
+
+
 
     }
 
@@ -77,6 +82,8 @@ public class Controller2 implements Initializable, Observer{
         for(User u : Main.getTwitterUsers()){
             if(u.getID() == username){
                 u.getMessages().add(tweet);
+                // update
+                lastUpdateTimeUpdate(u);
             }
         }
         TreeItem<String> item = new TreeItem<>(tweet);
@@ -95,5 +102,15 @@ public class Controller2 implements Initializable, Observer{
                 tweetList.getRoot().getChildren().add(news);
             }
         }
+    }
+
+    public void lastUpdateTimeUpdate(User user) {
+        long currentTime = System.currentTimeMillis();
+        user.setLastUpdateTime(currentTime);
+        lastUser = user.getID();
+    }
+
+    public String getLastUser(){
+        return lastUser;
     }
 }

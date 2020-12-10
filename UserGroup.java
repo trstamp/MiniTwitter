@@ -22,4 +22,8 @@ public class UserGroup implements Visitable{
     public List<User> getUsers(){
         return users;
     }
+
+    public String getID(){
+        return ID;
+    }
 }

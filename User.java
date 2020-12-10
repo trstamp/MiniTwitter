@@ -10,12 +10,14 @@ public class User extends Subject implements Visitable {
     private List<String> followings;
     private List<String> messages;
     private List<String> newsFeed;
+    private long lastUpdateTime;
 
     public User(String i_d){
         ID = i_d;
         followers = new LinkedList<>();
         followings = new LinkedList<>();
         newsFeed = new LinkedList<>();
+        lastUpdateTime = 0;
     }
 
     public void follow(String ID){
@@ -45,5 +47,13 @@ public class User extends Subject implements Visitable {
 
     public List<String> getNewsFeed() {
         return newsFeed;
+    }
+
+    public void setLastUpdateTime(long time) {
+        lastUpdateTime = time;
+    }
+
+    public long getLastUpdateTime(){
+        return lastUpdateTime;
     }
 }
